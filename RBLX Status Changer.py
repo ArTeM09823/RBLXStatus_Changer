@@ -1,13 +1,17 @@
-import requests
-import random
-import time
-import os
-
-rand_text = ['Hello World!','Python','evvml'] # Add your text
+import requests,random,time,os,json
 
 os.system('cls')
 
-cookie = input("Cookie: ")
+#Load CFG
+cfg = open('config.json')
+data = json.load(cfg)
+words = data['Words']
+cookie = data['Cookie']
+seconds = data['Seconds']
+
+
+rand_text = words
+os.system('cls')
 
 session = requests.session()
 session.cookies['.ROBLOSECURITY'] = cookie
@@ -22,6 +26,7 @@ def grabCSRF(): #GrabCSRF not mine
    csrf = r.headers['x-csrf-token']
    return csrf
 
+#Checks Cookie
 try:
     grabCSRF()
 except KeyError:
@@ -33,7 +38,7 @@ os.system("cls")
 csrf = grabCSRF()
 
 while True:
-    time.sleep(2)
+    time.sleep(seconds)
     rand_status = random.choice(rand_text)
     sfo = {
         "description":rand_status
@@ -43,6 +48,6 @@ while True:
         print("Cooldown Detected! Please wait 60 secs | Status Code: " + str(s.status_code))
         time.sleep(60)
     else:
-        print("Status Changed to: " + rand_status + " | Status Code: " + str(s.status_code) + " | " + s.text )
+        print("Status Changed to: " + rand_status + " | Status Code: " + str(s.status_code) + " | " + s.json()["description"] )
 
 input()
