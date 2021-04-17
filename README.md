@@ -1,9 +1,7 @@
 # ROBLOX Status Changer
 * Based on Python
-* Open .py file and change the text
+* Open config.json and edit it
 ### How to install?
 ```
 pip install -r requirements.txt
 ```
-
-* Also edit the config.json
