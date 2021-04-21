@@ -37,17 +37,23 @@ os.system("cls")
 
 csrf = grabCSRF()
 
+def change(text):
+    sfo = {"description":text}
+    s = session.post(url = "https://accountinformation.roblox.com/v1/description",headers ={"X-CSRF-Token": csrf},data=sfo)
+    if "403" in str(s.status_code):
+        return "403"
+    else:
+        return s.json()["description"] 
+
+
 while True:
     time.sleep(seconds)
     rand_status = random.choice(rand_text)
-    sfo = {
-        "description":rand_status
-    }
-    s = session.post(url = "https://accountinformation.roblox.com/v1/description",headers ={"X-CSRF-Token": csrf},data=sfo)
-    if "403" in str(s.status_code):
-        print("Cooldown Detected! Please wait 60 secs | Status Code: " + str(s.status_code))
-        time.sleep(60)
+    output = change(rand_status)
+    if output == "403":
+       print("Cooldown! (Please wait 60 sec)")
+       time.sleep(60)
     else:
-        print("Status Changed to: " + rand_status + " | Status Code: " + str(s.status_code) + " | " + s.json()["description"] )
+        print(f"Status changed to: {output} ({rand_status})")
 
 input()
